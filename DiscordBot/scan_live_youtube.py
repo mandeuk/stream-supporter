@@ -2,7 +2,7 @@ import discord
 import datetime
 import asyncio
 import os
-import google.auth
+import google.auth #모듈 설치 필요: ip install -U google-api-python-client
 import requests
 import json
 
