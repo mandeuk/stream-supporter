@@ -4,6 +4,7 @@ import json
 
 #다른 파일 import
 import scan_live_youtube
+import scan_live_chzzk # Import the new Chzzk scanner
 import db
 
 #config 파일 불러오기
@@ -14,23 +15,18 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot(command_prefix='!', intents=intents)
-dbcnx = None
+dbcxn = None
 
 
 @bot.event
 async def on_ready():
-    if not dbcnx:
-        dbcnx = await db.connect_db()
+    global dbcxn
+    if not dbcxn:
+        await db.connect_db()
 
-    # test_channel_id = 1201193468106657863  # Replace with your actual channel ID
-    # test_channel = bot.get_channel(test_channel_id)
-    
-    # if test_channel:
-    #     await test_channel.send('전자마골 가동 준비 완료')
-    # else:
-    #     print(f"Couldn't find the channel with ID {test_channel_id}")
-    # await scan_live_youtube.check_activities()
-    # #bot.loop.create_task(scan_live_youtube.scan_live_youtube(bot))
+    print(f'Logged in as {bot.user.name}')
+    # Start the Chzzk live stream scanner as a background task
+    bot.loop.create_task(scan_live_chzzk.scan_live_chzzk(bot))
 
 @bot.command()
 async def start(ctx):
